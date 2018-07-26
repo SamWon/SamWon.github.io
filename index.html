@@ -182,8 +182,8 @@
     // }
 
     function orient(event) {
-        orientLon = event.gamma;
-        orientLat = event.beta;
+        orientLon = event.gamma * factor;
+        orientLat = event.beta * factor;
     }
 </script>
 
