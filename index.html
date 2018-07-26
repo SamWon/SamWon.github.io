@@ -88,8 +88,8 @@
         // 动态渲染
         var render = function () {
             requestAnimationFrame( render );
-            lat += orientLat;
-            lon += orientLon;
+            lat -= orientLat;
+            lon -= orientLon;
 
             camera.rotation.x = lat * Math.PI / 180;
             camera.rotation.y = lon * Math.PI / 180;
@@ -182,8 +182,8 @@
     // }
 
     function orient(event) {
-        orientLon = -event.gamma * .003;
-        orientLat = -event.beta * .003;
+        orientLon = event.gamma * .003;
+        orientLat = event.beta * .003;
     }
 </script>
 
