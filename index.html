@@ -51,7 +51,7 @@
     //     lon: 0
     // };
     // var deceleration = 0.5;
-    var factor = .3;
+    var factor = .25;
 
     init();
     touch();
@@ -107,7 +107,7 @@
         document.addEventListener('touchstart', start);
         document.addEventListener('touchmove', move);
         document.addEventListener('touchend', end);
-        document.addEventListener('deviceorientation', orient);
+        window.addEventListener('deviceorientation', orient);
     }
 
     function start(event) {
