@@ -51,7 +51,7 @@
     //     lon: 0
     // };
     // var deceleration = 0.5;
-    var factor = .1;
+    var factor = .3;
 
     init();
     touch();
@@ -132,7 +132,6 @@
 
                     lastX = evt.clientX;
                     lastY = evt.clientY;
-                    console.log(lastX, lastY);
                 }
                 break;
             // case 2:
@@ -183,8 +182,9 @@
     // }
 
     function orient(event) {
-        orientLon = evt.gamma;
-        orientLat = evt.beta;
+        console.log(event);
+        orientLon = event.gamma;
+        orientLat = event.beta;
     }
 </script>
 
