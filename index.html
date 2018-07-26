@@ -23,6 +23,7 @@
 </body>
 
 <script>
+    window.time = +new Date();
     var opt = {
         url: 'https://samwon.github.io/img.jpg',
         container: document.getElementById('panorama'),// 容器
@@ -104,9 +105,9 @@
     // END init
 
     function touch() {
-        document.addEventListener('touchstart', start);
-        document.addEventListener('touchmove', move);
-        document.addEventListener('touchend', end);
+        window.addEventListener('touchstart', start);
+        window.addEventListener('touchmove', move);
+        window.addEventListener('touchend', end);
         window.addEventListener('deviceorientation', orient);
     }
 
@@ -182,8 +183,8 @@
     // }
 
     function orient(event) {
-        orientLon = event.gamma * .00005;
-        orientLat = event.beta * .00005;
+        orientLon = event.gamma * .00015;
+        orientLat = event.beta * .00015;
     }
 </script>
 
