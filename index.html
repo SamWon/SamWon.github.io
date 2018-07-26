@@ -23,7 +23,6 @@
 </body>
 
 <script>
-    window.time = +new Date();
     var opt = {
         url: 'https://samwon.github.io/img.jpg',
         container: document.getElementById('panorama'),// 容器
@@ -183,8 +182,8 @@
     // }
 
     function orient(event) {
-        orientLon = event.gamma * .00015;
-        orientLat = event.beta * .00015;
+        orientLon = event.gamma * .01;
+        orientLat = event.beta * .01;
     }
 </script>
 
