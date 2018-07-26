@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Panorama</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        #panorama {
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="panorama"></div>
+    <script src="https://threejs.org/build/three.js"></script>
+</body>
+
+<script>
+    var opt = {
+        url: './img.jpg',
+        container: document.getElementById('panorama'),// 容器
+        radius: 500,// 半径
+        fov: 90// 相机视角，可用于放大和缩小图片
+    };
+    opt.width = opt.container.clientWidth;
+    opt.height = opt.container.clientHeight;
+    var camara;
+    var scene;
+    var renderer;
+    var canvas;
+
+    // 监听
+    var lat = 0;
+    var lon = 0;
+    var lastX = 0;
+    var lastY = 0;
+    var lastDistance = 0;
+    var startX = 0;
+    var startY = 0;
+    // var speed = {
+    //     lat: 0,
+    //     lon: 0
+    // };
+    // var deceleration = 0.5;
+    var factor = .1;
+
+    init();
+    touch();
+
+
+    function init() {
+        // 相机
+        camera = new THREE.PerspectiveCamera(opt.fov, opt.width / opt.height, 1, 10000);
+        // camera.position.z = 600;
+        camera.target = new THREE.Vector3(0, 0, 0);
+
+        // 球体
+        var geometry = new THREE.SphereBufferGeometry(opt.radius, 60, 40);
+        geometry.scale(-1, 1, 1);
+
+        // 材质
+        var material = new THREE.MeshBasicMaterial({
+            map: new THREE.TextureLoader().load(opt.url)
+        });
+
+        // 场景
+        var mesh = new THREE.Mesh(geometry, material);
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color( 0xf0f0f0 );
+        scene.add(mesh);
+
+        // 渲染
+        renderer = new THREE.WebGLRenderer();
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(opt.width, opt.height);
+        canvas = renderer.domElement;
+        opt.container.appendChild(canvas);
+
+        // 动态渲染
+        var render = function () {
+            requestAnimationFrame( render );
+
+            camera.rotation.x = lat * Math.PI / 180;
+            camera.rotation.y = lon * Math.PI / 180;
+            // camera.rotation.x = THREE.Math.degToRad(lat);
+            // camera.rotation.y = THREE.Math.degToRad(lon);
+
+            renderer.render( scene, camera );
+        };
+        render();
+    }
+    // END init
+
+    function touch() {
+document.addEventListener('touchstart', start);
+document.addEventListener('touchmove', move);
+document.addEventListener('touchend', end);
+    }
+
+    function start(event) {
+        var evt = event.changedTouches[0];
+        startX = lastX = evt.clientX;
+        startY = lastY = evt.clientY;
+        // speed = {
+        //     lat: 0,
+        //     lon: 0
+        // };
+        lastDistance = undefined;
+    }
+
+    function move(event) {
+        // event.preventDefault();
+        var evt = event.changedTouches[0];
+        switch (event.changedTouches.length) {
+            case 1 :
+                if (!lastDistance) {
+                    lon += (evt.clientX - lastX) * factor;
+                    lat += (evt.clientY - lastY) * factor;
+
+                    lastX = evt.clientX;
+                    lastY = evt.clientY;
+                    console.log(lastX, lastY);
+                }
+                break;
+            // case 2:
+            //     const evt1 = event.changedTouches[1];
+            //     let distance = Math.abs(evt.clientX - evt1.clientX) + Math.abs(evt.clientY - evt1.clientY);
+            //     if (this.lastDistance === undefined) {
+            //         this.lastDistance = distance;
+            //     }
+            //     let scale = distance / this.lastDistance;
+
+            //     if (scale) {
+            //         this.config.onChange({scale});
+            //         this.lastDistance = distance;
+            //     }
+        }
+    }
+
+    function end(event) {
+        //惯性
+        // var t = (Date.now() - startTime) / 10;
+        // speed = {
+        //     lat: (startY - lastY) / t,
+        //     lon: (startX - lastX) / t
+        // };
+
+        // inertance();
+    }
+
+    // function subSpeed(speed) {
+    //     if (speed !== 0) {
+    //         if (speed > 0) {
+    //             speed -= deceleration;
+    //             speed < 0 && (speed = 0);
+    //         } else {
+    //             speed += deceleration;
+    //             speed > 0 && (speed = 0);
+    //         }
+    //     }
+    //     return speed;
+    // }
+
+    // function inertance() {
+    //     speed.lat = subSpeed(speed.lat);
+    //     speed.lon = subSpeed(speed.lon);
+
+    //     lat -= speed.lat;
+    //     lon += speed.lon;
+    // }
+</script>
+
+</html>
