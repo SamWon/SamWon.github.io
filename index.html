@@ -183,7 +183,7 @@
 
     function orient(event) {
         orientLon = event.gamma * .013;
-        orientLat = event.beta * .013;
+        orientLat = (event.beta - 90) * .013;
     }
 </script>
 
